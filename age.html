@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crappy Web Age Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .age-counter {
+            font-size: 24px;
+            font-weight: bold;
+            color: #009688;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Craapy Web Age Tracker</h1>
+        <p>This website has been alive for:</p>
+        <div class="age-counter" id="age-counter">Calculating...</div>
+        <p>seconds</p>
+    </div>
+<script>
+    // Get the current epoch timestamp in seconds
+    const currentEpoch = Math.floor(Date.now() / 1000);
+
+    // The starting epoch timestamp
+    const startEpoch = 1696960489;
+
+    // Calculate the age of the website in seconds
+    const ageInSeconds = currentEpoch - startEpoch;
+
+    // Display the age on the webpage with commas for thousands
+    const ageCounter = document.getElementById('age-counter');
+    ageCounter.textContent = ageInSeconds.toLocaleString();
+
+    // Update the age every second
+    setInterval(() => {
+        const ageInSeconds = currentEpoch - startEpoch;
+        ageCounter.textContent = ageInSeconds.toLocaleString();
+    }, 1000);
+</script>
+
+</body>
+</html>
