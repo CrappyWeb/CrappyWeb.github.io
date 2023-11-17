@@ -1,5 +1,5 @@
 // Initialize variables for min and max increase
-let minIncrease = 1;
+let minIncrease = -10; // Default to allow decreasing values
 let maxIncrease = 10;
 
 // Initialize the counter
@@ -56,7 +56,7 @@ document.addEventListener("keydown", function (event) {
     const newMin = parseInt(prompt("Enter a new minimum value:"));
     const newMax = parseInt(prompt("Enter a new maximum value:"));
 
-    if (!isNaN(newMin) && !isNaN(newMax) && newMin <= newMax) {
+    if (!isNaN(newMin) && !isNaN(newMax)) {
       minIncrease = newMin;
       maxIncrease = newMax;
     } else {
