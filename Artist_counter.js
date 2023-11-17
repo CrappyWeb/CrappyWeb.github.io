@@ -1,80 +1,35 @@
-// Initialize variables for min and max increase
+let counter = 0;
+let isPaused = false;
 let minIncrease = 1;
 let maxIncrease = 10;
+let interval = 1000; // 1 second
 
-// Initialize the counter
-let counter = 0;
-
-// Initialize the update interval (default: 1000 milliseconds)
-let updateInterval = 1000;
-
-// Initialize a variable to track whether the counter is paused
-let isPaused = false;
-
-// Function to update the counter
 function updateCounter() {
   if (!isPaused) {
-    // Generate a random number between minIncrease and maxIncrease
-    const randomIncrease = Math.floor(Math.random() * (maxIncrease - minIncrease + 1)) + minIncrease;
-
-    // Update the counter
-    counter += randomIncrease;
-
-    // Display the counter with commas
-    const formattedCounter = counter.toLocaleString();
-
-    // Replace the class with the formatted counter
-    const element = document.querySelector(".Type__TypeElement-sc-goli3j-0.dtA-DNF");
-    if (element) {
-      element.textContent = formattedCounter;
-    }
+    const elements = document.querySelectorAll('.Ydwa1P5GkCggtLlSvphs');
+    counter += Math.floor(Math.random() * (maxIncrease - minIncrease + 1)) + minIncrease;
+    elements.forEach((element) => {
+      element.textContent = counter.toLocaleString() + ' monthly listeners';
+    });
   }
 }
 
-// Function to start or restart the interval
-function startInterval() {
-  clearInterval(interval);
-  interval = setInterval(updateCounter, updateInterval);
-}
+setInterval(updateCounter, interval);
 
-// Initial update of the counter
-updateCounter();
-
-// Interval to update the counter every second
-let interval = setInterval(updateCounter, updateInterval);
-
-// Event listener for the "s" key to pause/unpause the counter
-document.addEventListener("keydown", function (event) {
-  if (event.key === "s") {
+document.addEventListener('keydown', (event) => {
+  if (event.key === 's') {
     isPaused = !isPaused;
-  }
-});
-
-// Event listener for the "c" key to set new min and max values
-document.addEventListener("keydown", function (event) {
-  if (event.key === "c") {
-    const newMin = parseInt(prompt("Enter a new minimum value:"));
-    const newMax = parseInt(prompt("Enter a new maximum value:"));
-
-    if (!isNaN(newMin) && !isNaN(newMax) && newMin <= newMax) {
-      minIncrease = newMin;
-      maxIncrease = newMax;
-    } else {
-      alert("Invalid input. Please enter valid minimum and maximum values.");
+  } else if (event.key === 'c') {
+    const newMinIncrease = prompt('Enter new minimum increase:');
+    const newMaxIncrease = prompt('Enter new maximum increase:');
+    if (!isNaN(newMinIncrease) && !isNaN(newMaxIncrease)) {
+      minIncrease = parseInt(newMinIncrease);
+      maxIncrease = parseInt(newMaxIncrease);
     }
-  }
-});
-
-// Event listener for the "i" key to set a new update interval
-document.addEventListener("keydown", function (event) {
-  if (event.key === "i") {
-    const newInterval = parseInt(prompt("Enter a new update interval in milliseconds:"));
-
-    if (!isNaN(newInterval) && newInterval > 0) {
-      updateInterval = newInterval;
-      startInterval();
-    } else {
-      alert("Invalid input. Please enter a valid positive number for the update interval.");
+  } else if (event.key === 'i') {
+    const newInterval = prompt('Enter new interval in milliseconds:');
+    if (!isNaN(newInterval)) {
+      interval = parseInt(newInterval);
     }
   }
 });
