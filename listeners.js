@@ -1,44 +1,80 @@
-let counter = 0;
-let isPaused = false;
+// Initialize variables for min and max increase
 let minIncrease = 1;
 let maxIncrease = 10;
-let interval = 1000; // 1 second
 
-function abbreviateNumber(num) {
-  if (num >= 1000) {
-    const suffixes = ['', 'K', 'M', 'B', 'T'];
-    const order = Math.min(Math.floor(Math.log10(Math.abs(num)) / 3), suffixes.length - 1);
-    return (num / Math.pow(10, order * 3)).toFixed(1) + suffixes[order];
-  }
-  return num;
-}
+// Initialize the counter
+let counter = 0;
 
+// Initialize the update interval (default: 1000 milliseconds)
+let updateInterval = 1000;
+
+// Initialize a variable to track whether the counter is paused
+let isPaused = false;
+
+// Function to update the counter
 function updateCounter() {
   if (!isPaused) {
-    const elements = document.querySelectorAll('.Ydwa1P5GkCggtLlSvphs');
-    counter += Math.floor(Math.random() * (maxIncrease - minIncrease + 1)) + minIncrease;
-    elements.forEach((element) => {
-      element.textContent = abbreviateNumber(counter) + ' monthly listeners';
-    });
+    // Generate a random number between minIncrease and maxIncrease
+    const randomIncrease = Math.floor(Math.random() * (maxIncrease - minIncrease + 1)) + minIncrease;
+
+    // Update the counter
+    counter += randomIncrease;
+
+    // Display the counter with commas and append " monthly listeners"
+    const formattedCounter = counter.toLocaleString() + " monthly listeners";
+    
+    // Replace the class with the formatted counter
+    const element = document.querySelector(".Ydwa1P5GkCggtLlSvphs");
+    if (element) {
+      element.textContent = formattedCounter;
+    }
   }
 }
 
-setInterval(updateCounter, interval);
+// Function to start or restart the interval
+function startInterval() {
+  clearInterval(interval);
+  interval = setInterval(updateCounter, updateInterval);
+}
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === 's') {
+// Initial update of the counter
+updateCounter();
+
+// Interval to update the counter every second
+let interval = setInterval(updateCounter, updateInterval);
+
+// Event listener for the "s" key to pause/unpause the counter
+document.addEventListener("keydown", function (event) {
+  if (event.key === "s") {
     isPaused = !isPaused;
-  } else if (event.key === 'c') {
-    const newMinIncrease = prompt('Enter new minimum increase:');
-    const newMaxIncrease = prompt('Enter new maximum increase:');
-    if (!isNaN(newMinIncrease) && !isNaN(newMaxIncrease)) {
-      minIncrease = parseInt(newMinIncrease);
-      maxIncrease = parseInt(newMaxIncrease);
+  }
+});
+
+// Event listener for the "c" key to set new min and max values
+document.addEventListener("keydown", function (event) {
+  if (event.key === "c") {
+    const newMin = parseInt(prompt("Enter a new minimum value:"));
+    const newMax = parseInt(prompt("Enter a new maximum value:"));
+
+    if (!isNaN(newMin) && !isNaN(newMax) && newMin <= newMax) {
+      minIncrease = newMin;
+      maxIncrease = newMax;
+    } else {
+      alert("Invalid input. Please enter valid minimum and maximum values.");
     }
-  } else if (event.key === 'i') {
-    const newInterval = prompt('Enter new interval in milliseconds:');
-    if (!isNaN(newInterval)) {
-      interval = parseInt(newInterval);
+  }
+});
+
+// Event listener for the "i" key to set a new update interval
+document.addEventListener("keydown", function (event) {
+  if (event.key === "i") {
+    const newInterval = parseInt(prompt("Enter a new update interval in milliseconds:"));
+
+    if (!isNaN(newInterval) && newInterval > 0) {
+      updateInterval = newInterval;
+      startInterval();
+    } else {
+      alert("Invalid input. Please enter a valid positive number for the update interval.");
     }
   }
 });
