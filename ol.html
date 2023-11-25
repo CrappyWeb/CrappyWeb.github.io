@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Overlay App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Overlay App</h1>
+
+    <input type="file" id="imageInput" accept="image/*">
+    <br>
+    <label for="overlaySelect">Select Overlay:</label>
+    <select id="overlaySelect">
+        <option value="https://cdn.discordapp.com/attachments/1117486974706659481/1177816194242334762/Tha_Lights_Local.png?ex=6573e1cf&is=65616ccf&hm=1b21be362cb79ba8af7a47ed2c988d574a5ab2d794f441b3f96d454682bdd110&">Overlay 1</option>
+        <!-- Add more overlay options as needed -->
+    </select>
+    <br>
+    <button onclick="processImage()">Process Image</button>
+
+    <div id="output"></div>
+
+    <script>
+        function processImage() {
+            var imageInput = document.getElementById('imageInput');
+            var overlaySelect = document.getElementById('overlaySelect');
+            var outputDiv = document.getElementById('output');
+
+            if (imageInput.files.length === 0) {
+                alert('Please select an image.');
+                return;
+            }
+
+            var imageFile = imageInput.files[0];
+            var overlayFile = overlaySelect.value;
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var img = new Image();
+                img.onload = function () {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    var ctx = canvas.getContext('2d');
+
+                    // Draw the image
+                    ctx.drawImage(img, 0, 0);
+
+                    // Load and draw the overlay
+                    var overlay = new Image();
+                    overlay.onload = function () {
+                        ctx.drawImage(overlay, 0, 0, img.width, img.height);
+
+                        // Display the processed image
+                        outputDiv.innerHTML = '<h2>Processed Image</h2>';
+                        outputDiv.appendChild(canvas);
+                    };
+                    overlay.src = overlayFile;
+                };
+                img.src = e.target.result;
+            };
+
+            reader.readAsDataURL(imageFile);
+        }
+    </script>
+</body>
+</html>
