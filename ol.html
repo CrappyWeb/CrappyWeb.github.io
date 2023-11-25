@@ -22,7 +22,7 @@
     <br>
     <label for="overlaySelect">Select Overlay:</label>
     <select id="overlaySelect">
-        <option value="https://cdn.discordapp.com/attachments/1117486974706659481/1177816194242334762/Tha_Lights_Local.png?ex=6573e1cf&is=65616ccf&hm=1b21be362cb79ba8af7a47ed2c988d574a5ab2d794f441b3f96d454682bdd110&">Overlay 1</option>
+        <option value="overlay1.png">Overlay 1</option>
         <!-- Add more overlay options as needed -->
     </select>
     <br>
@@ -65,6 +65,9 @@
                         // Display the processed image
                         outputDiv.innerHTML = '<h2>Processed Image</h2>';
                         outputDiv.appendChild(canvas);
+
+                        // Enable the download button
+                        enableDownloadButton(canvas.toDataURL('image/png'));
                     };
                     overlay.src = overlayFile;
                 };
@@ -72,6 +75,31 @@
             };
 
             reader.readAsDataURL(imageFile);
+        }
+
+        function enableDownloadButton(imageDataUrl) {
+            var downloadButton = document.getElementById('downloadButton');
+
+            if (!downloadButton) {
+                downloadButton = document.createElement('button');
+                downloadButton.id = 'downloadButton';
+                downloadButton.innerText = 'Download Image';
+                downloadButton.addEventListener('click', function () {
+                    downloadImage(imageDataUrl);
+                });
+                document.body.appendChild(downloadButton);
+            } else {
+                downloadButton.style.display = 'block';
+            }
+        }
+
+        function downloadImage(dataUrl) {
+            var a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = 'processed_image.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     </script>
 </body>
